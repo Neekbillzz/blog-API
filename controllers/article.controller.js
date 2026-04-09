@@ -2,39 +2,21 @@ const Joi = require("joi");
 
 const ArticleModel = require("../models/article.model");
 
-
-const postArticle = async (req, res, next) => {
-
-
-  const articleSchema = Joi.object({
-    title: Joi.string().min(3).required(),
-    content: Joi.string().min(5).required(),
-    author: Joi.string().default("Guest"),
-    category: Joi.string().default("General"),
-    readTime: Joi.number().min(1).default(5),
-    status: Joi.string().valid("draft", "published").default("draft"),
-
-
-
-  });
-
-  const { error, value } = articleSchema.validate(req.body);
-
-  if (error) {
-    return res.status(400).json("Please provide article title and content");
-  }
-
+// Inside your createArticle controller
+const postArticle = async (req, res) => {
   try {
-    const newArticle = new ArticleModel(value);
-    const savedArticle = await newArticle.save();
+    const { title, content } = req.body;
 
-    return res.status(201).json({
-      message: "Article created",
-      data: newArticle,
+    const newArticle = new ArticleModel({
+      title,
+      content,
+      author: req.user.userId, // This comes from your requireAuth middleware!
     });
+
+    await newArticle.save();
+    res.status(201).json(newArticle);
   } catch (error) {
-    console.error(error);
-    next(error);
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -81,19 +63,20 @@ const updateArticleById = async (req, res, next) => {
     status: Joi.string().valid("draft", "published").default("draft"),
   });
 
-const result = articleSchema.validate(req.body);
-const error = result.error;
-const value = result.value;
+  const result = articleSchema.validate(req.body);
+  const error = result.error;
+  const value = result.value;
 
-console.log(value);
+  console.log(value);
 
   if (error) {
     return res.status(400).json("Please provide article title and content");
   }
   try {
     const updateArticle = await ArticleModel.findByIdAndUpdate(
-      req.params.id, value,
-    
+      req.params.id,
+      value,
+
       {
         new: true,
         runValidators: true,
@@ -116,12 +99,12 @@ const updatedArticle = async (req, res, next) => {
   try {
     // 1. Joi Validation (Checking for all required fields)
     const schema = Joi.object({
-    title: Joi.string().min(3).required(),
-    content: Joi.string().min(5).required(),
-    author: Joi.string().default("Guest"),
-    category: Joi.string().default("General"),
-    readTime: Joi.number().min(1).default(5),
-    status: Joi.string().valid("draft", "published").default("draft"),
+      title: Joi.string().min(3).required(),
+      content: Joi.string().min(5).required(),
+      author: Joi.string().default("Guest"),
+      category: Joi.string().default("General"),
+      readTime: Joi.number().min(1).default(5),
+      status: Joi.string().valid("draft", "published").default("draft"),
     });
 
     const { error } = schema.validate(req.body);
@@ -151,10 +134,9 @@ const deleteArticleById = async (req, res, next) => {
     if (!deletedArticle) {
       return res.status(404).json({ message: "Article not found" });
     }
-      return res.status(200).json({
-        message: "Article deleted successfully",
-      });
-    
+    return res.status(200).json({
+      message: "Article deleted successfully",
+    });
   } catch (error) {
     console.error(error);
     next(NativeError);
@@ -162,35 +144,33 @@ const deleteArticleById = async (req, res, next) => {
 };
 
 const searchArticles = async (req, res, next) => {
-    try {
-        const { q } = req.query; // query keyword
+  try {
+    const { q } = req.query; // query keyword
 
-        if (!q) {
-            return res.status(400).json({ message: "Search query 'q' is required" });
-        }
-
-        
-        const results = await ArticleModel.find(
-            { $text: { $search: q } },
-            { score: { $meta: "textScore" } } 
-        ).sort({ score: { $meta: "textScore" } }); 
-
-        res.status(200).json({
-            count: results.length,
-            data: results
-        });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!q) {
+      return res.status(400).json({ message: "Search query 'q' is required" });
     }
+
+    const results = await ArticleModel.find(
+      { $text: { $search: q } },
+      { score: { $meta: "textScore" } },
+    ).sort({ score: { $meta: "textScore" } });
+
+    res.status(200).json({
+      count: results.length,
+      data: results,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-
 module.exports = {
-    postArticle,
-    getAllArticle,
-    getArticleById,
-    updateArticleById,
-    updatedArticle,
-    deleteArticleById,
-    searchArticles,
+  postArticle,
+  getAllArticle,
+  getArticleById,
+  updateArticleById,
+  updatedArticle,
+  deleteArticleById,
+  searchArticles,
 };

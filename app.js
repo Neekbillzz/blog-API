@@ -4,7 +4,8 @@ const cors = require("cors");
 const connectDB = require("./database/connectDB");
 const logRequest = require("./middlewares/logger");
 const errorhandler = require("./middlewares/errHandler");
-const ArticleRoutes = require("./routes/article.route")
+const ArticleRoutes = require("./routes/article.route");
+const UserRoutes = require("./routes/user.route")
 
 const app = express();
 const PORT = process.env.PORT;
@@ -18,6 +19,7 @@ app.use(cors("*"));
 
 
 app.use('/api', ArticleRoutes);
+app.use("/api/users", UserRoutes)
 
 
 app.use(errorhandler);
