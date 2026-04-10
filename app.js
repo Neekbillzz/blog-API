@@ -8,7 +8,7 @@ const ArticleRoutes = require("./routes/article.route");
 const UserRoutes = require("./routes/user.route")
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT ||3017
 
 connectDB();
 
@@ -18,8 +18,8 @@ app.use(cors("*"));
 
 
 
-app.use('/api', ArticleRoutes);
-app.use("/api/users", UserRoutes)
+app.use('/auth', ArticleRoutes);
+app.use('/auth/users', UserRoutes)
 
 
 app.use(errorhandler);
