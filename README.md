@@ -46,7 +46,7 @@ This backend provides full CRUD functionality this application. It features adva
 
 5.  **Endpoints**
 
-All requests should be made to the following base URL:
+All requests should be made to the following base URL: https://blog-api-kiir.onrender.com/auth/articles
 
 ### Articles Resource
 
