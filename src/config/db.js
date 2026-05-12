@@ -8,7 +8,7 @@ try {
     console.log("Database Connected Successfully");
 } catch (error) {
     console.error("DB connection Failed");
-        // process.exit(1);
+        process.exit(1);
     }
 };
 

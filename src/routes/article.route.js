@@ -9,7 +9,7 @@ const {
     deleteArticleById,
     searchArticles,
  } = require("../controllers/article.controller");
-const requireAuth = require("../validations/requireAuth");
+const requireAuth = require("../middlewares/requireAuth");
 
 const router = express.Router();
 

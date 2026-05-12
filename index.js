@@ -4,10 +4,10 @@ const connectDB = require("./src/config/db");
 
 const app = require("./src/app");
 
-connectDB();
 
 const PORT = process.env.PORT || 3020;
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await connectDB();
   console.log(`Server is listening on Port ${PORT}`);
 });
