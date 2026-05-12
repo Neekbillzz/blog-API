@@ -48,16 +48,15 @@ This backend provides full CRUD functionality this application. It features adva
 
 All requests should be made to the following base URL:
 
-
 ### Articles Resource
 
-| Method | Endpoint   | Description                                                                                 | Query Parameters / Body                  |
-| :----- | :--------- | :------------------------------------------------------------------------------------------ | :--------------------------------------- |
-| POST   | /articles     | Create a new article post | Body: { title, content, category, tags } |
-| GET    | /articles    | Fetch all articles                                                                             | Query: page, limit, search, sort         |
-| GET    | /articles/:id | Fetch a single article                                                                         | Params: id                               |
-| PUT    | /articles/:id | Update an existing article                                                                     | Body: { title, content, author, category } |
-| DELETE | /articles/:id | Remove an article                                                                               | Params: id                               |
+| Method | Endpoint      | Description                | Query Parameters / Body                    |
+| :----- | :------------ | :------------------------- | :----------------------------------------- |
+| POST   | /articles     | Create a new article post  | Body: { title, content, category, tags }   |
+| GET    | /articles     | Fetch all articles         | Query: page, limit, search, sort           |
+| GET    | /articles/:id | Fetch a single article     | Params: id                                 |
+| PUT    | /articles/:id | Update an existing article | Body: { title, content, author, category } |
+| DELETE | /articles/:id | Remove an article          | Params: id                                 |
 
 ---
 
@@ -67,13 +66,11 @@ To search for articles about "Nodejs" in the "Backend" category, with pagination
 
     GET /auth/articles?search=nodejs&category=Backend&page=1&limit=5
 
-
 ---
 
 ### | Validation
 
 - **Validation:** Powered by **Joi**, ensuring data integrity with meaningful error messages for every request
-
 
 ---
 
@@ -84,7 +81,7 @@ Before accessing the articles, you must register a user and log in to receive a 
 | Feature           | Method | Endpoint              | Description                                          |
 | :---------------- | :----- | :-------------------- | :--------------------------------------------------- |
 | **User Register** | `POST` | `/auth/users/sign-up` | Create a new account with name, email, and password. |
-| **User Login**    | `POST` | `/auth/users/login`    | Authenticates user and returns a JWT token.          |
+| **User Login**    | `POST` | `/auth/users/login`   | Authenticates user and returns a JWT token.          |
 
 ### **Request Body Examples**
 
@@ -96,14 +93,11 @@ Before accessing the articles, you must register a user and log in to receive a 
 "password": "password123"
 }
 
-
 ## | API Reference & Postman Documentation
 
 ### 1. Create an Article (POST)
 
 POST /auth/articles
-
-
 
 ---
 
@@ -113,32 +107,24 @@ GET /auth/articles
 
 Supports the following query parameters:
 
-| Parameter | Description                 | Example                 |
-| :-------- | :-------------------------- | :---------------------- |
-| page      | Page number for pagination  | ?page=2                 |
-| limit     | Items per page              | ?limit=5                |
+| Parameter | Description                 | Example             |
+| :-------- | :-------------------------- | :------------------ |
+| page      | Page number for pagination  | ?page=2             |
+| limit     | Items per page              | ?limit=5            |
 | search    | Text search (title/content) | search?q=javascript |
-| sort      | Field to sort by            | ?sort=-createdAt        |
-
-
+| sort      | Field to sort by            | ?sort=-createdAt    |
 
 ### 3. Get Single Article (GET)
 
 GET /auth/articles/:id
 
-
-
 ### 4. Update Article (PUT)
 
 PUT /auth/articles/:id
 
-
-
 ### 5. Delete Article (DELETE)
 
 DELETE /auth/articles/:id
-
-
 
 ---
 
@@ -177,4 +163,4 @@ The API implements standard HTTP status codes:
 
 ## Our API doc
 
-[Our API Doc] (https:)
+[View API Documentation] (https://documenter.getpostman.com/view/52776554/2sBXqNoKWR)
